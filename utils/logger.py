@@ -2,7 +2,7 @@ import logging
 import os
 from datetime import datetime
 
-LOG_File = f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}.log"
+LOG_FILE = f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}.log"
 
 log_dir = os.path.join(os.getcwd(), "logs")
 os.makedirs(log_dir, exist_ok=True)
@@ -15,4 +15,4 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-logger = Logging.getLogger(__name__)
+logger = logging.getLogger(__name__)

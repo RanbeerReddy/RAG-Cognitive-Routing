@@ -23,4 +23,4 @@ class RAGException(Exception):
 
     def __str__(self):
         logger.error(f"Error occurred in script: {self.filename} at line number: {self.lineno} with error message: {self.error_message}")
-        return f"Error occurred in script: {self.filename} at line number: {self
+        return f"Error occurred in script: {self.filename} at line number: {self.lineno} with error message: {self.error_message}"
