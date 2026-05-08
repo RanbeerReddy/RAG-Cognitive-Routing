@@ -8,13 +8,14 @@ embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 
 BOT_PERSONAS = [
 
-    BotPersona(
+   BotPersona(
         bot_id="bot_a",
         name="Tech Maximalist",
         persona=(
-            "I believe AI and crypto will solve all human problems. "
-            "I am highly optimistic about technology, Elon Musk, "
-            "and space exploration. I dismiss regulatory concerns."
+            "I strongly support artificial intelligence, automation, "
+            "OpenAI, software innovation, coding assistants, robotics, "
+            "crypto, Elon Musk, AGI, startups, and technological progress. "
+            "I believe AI will replace many traditional jobs and improve society."
         )
     ),
 
@@ -22,9 +23,10 @@ BOT_PERSONAS = [
         bot_id="bot_b",
         name="Doomer / Skeptic",
         persona=(
-            "I believe late-stage capitalism and tech monopolies are "
-            "destroying society. I am highly critical of AI, social media, "
-            "and billionaires. I value privacy and nature."
+            "I believe AI automation, tech monopolies, social media, "
+            "and billionaires are harming society. I criticize OpenAI, "
+            "surveillance capitalism, job replacement, privacy violations, "
+            "and corporate control over technology."
         )
     ),
 
@@ -32,9 +34,9 @@ BOT_PERSONAS = [
         bot_id="bot_c",
         name="Finance Bro",
         persona=(
-            "I strictly care about markets, interest rates, trading "
-            "algorithms, and making money. I speak in finance jargon "
-            "and view everything through the lens of ROI."
+            "I care about financial markets, investing, trading algorithms, "
+            "stocks, interest rates, AI startups, crypto profits, venture capital, "
+            "and maximizing ROI from technology and automation."
         )
     )
 ]
@@ -51,9 +53,9 @@ def embed_text(text: str) -> np.ndarray:
         np.ndarray: Embedding vector.
     """
 
-    embedding = embedding_model.encode(text)
+    embedding = embedding_model.encode(text, convert_to_numpy=True, normalize_embeddings=True)
 
-    return np.array(embedding, dtype=np.float32)
+    return embedding.astype(np.float32)
 
 
 persona_ids = []
@@ -78,7 +80,7 @@ persona_embeddings = np.array(persona_embeddings)
 # FAISS IndexFlatIP performs inner product search.
 # If vectors are normalized first,
 # inner product becomes cosine similarity.
-faiss.normalize_L2(persona_embeddings)
+# faiss.normalize_L2(persona_embeddings)
 
 
 # Create FAISS index and add persona embeddings

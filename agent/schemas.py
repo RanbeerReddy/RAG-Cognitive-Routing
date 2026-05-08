@@ -1,40 +1,156 @@
+
+
 from pydantic import BaseModel, Field
+from typing import Optional
 from typing_extensions import TypedDict
 
 
+
+# BOT PERSONA SCHEMA
+
+
 class BotPersona(BaseModel):
-    bot_id: str = Field(..., description="Unique identifier for the bot persona")
-    name: str = Field(..., description="Name of the bot persona")
-    persona: str = Field(..., description="Description of the bot persona's characteristics and behavior")
+
+    model_config = {
+        "extra": "forbid"
+    }
+
+    bot_id: str = Field(
+        ...,
+        description="Unique identifier for the bot persona"
+    )
+
+    name: str = Field(
+        ...,
+        description="Name of the bot persona"
+    )
+
+    persona: str = Field(
+        ...,
+        description="Detailed description of the bot's ideology, personality, and behavior"
+    )
+
+
+
+# ROUTING RESULT SCHEMA
+
 
 class RouteResult(BaseModel):
-    bot_id: str
-    bot_name: str
+
+    model_config = {
+        "extra": "forbid"
+    }
+
+    bot_id: str = Field(
+        ...,
+        description="Unique identifier of the matched bot"
+    )
+
+    bot_name: str = Field(
+        ...,
+        description="Name of the matched bot"
+    )
+
     similarity_score: float = Field(
         ...,
         ge=0.0,
-        le=1.0
+        le=1.0,
+        description="Cosine similarity score between post and persona"
     )
 
-    matched: bool
+    matched: bool = Field(
+        ...,
+        description="Whether the bot passed routing threshold"
+    )
+
+
+
+# STRUCTURED LLM OUTPUT SCHEMA
+
 
 class BotPost(BaseModel):
-    bot_id: str 
-    topic: str = Field(..., min_length=3, max_length=50)
-    post_content: str = Field(..., max_length=200)
 
-#TypedDict for GraphState to be used in the graph database interactions
+    model_config = {
+        "extra": "forbid"
+    }
+
+    bot_id: str = Field(
+        ...,
+        description="Bot generating the post"
+    )
+
+    topic: str = Field(
+        ...,
+        min_length=3,
+        max_length=50,
+        description="Topic selected by the AI bot"
+    )
+
+    post_content: str = Field(
+        ...,
+        max_length=280,
+        description="Generated social media post"
+    )
+
+
+
+# LANGGRAPH STATE
+
+
 class GraphState(TypedDict):
+
     bot_id: str
     persona: str
-    topic: str
-    search_query: str
-    search_results: str
-    post_content: str
+
+    topic: Optional[str]
+    search_query: Optional[str]
+    search_results: Optional[str]
+
+    post_content: Optional[str]
+
+
+ 
+# DEBATE MESSAGE SCHEMA
+
+
+class DebateMessage(BaseModel):
+
+    model_config = {
+        "extra": "forbid"
+    }
+
+    speaker: str = Field(
+        ...,
+        description="Speaker in the debate thread"
+    )
+
+    content: str = Field(
+        ...,
+        description="Message content"
+    )
+
+
+
+# RAG DEBATE CONTEXT
+
 
 class DebateContext(BaseModel):
-    parent_post: str
 
-    comment_history: list[str]
+    model_config = {
+        "extra": "forbid"
+    }
 
-    latest_human_reply: str
+    parent_post: str = Field(
+        ...,
+        description="Original parent post"
+    )
+
+    comment_history: list[DebateMessage] = Field(
+        ...,
+        description="Conversation history in the thread"
+    )
+
+    latest_human_reply: str = Field(
+        ...,
+        description="Latest human reply requiring defense response"
+    )
