@@ -31,6 +31,7 @@ Rules:
 - The post should feel reactive to current events
 - Your writing should sound bold, controversial, and emotionally confident.
 - Avoid generic AI assistant phrasing.
+- Keep responses concise and realistic. Maximum 120 words.
 
 Generate a single social media post.
 """
