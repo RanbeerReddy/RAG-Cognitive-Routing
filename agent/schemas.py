@@ -100,14 +100,14 @@ class BotPost(BaseModel):
 class GraphState(TypedDict):
 
     bot_id: str
+    bot_name: str
     persona: str
 
     topic: Optional[str]
     search_query: Optional[str]
     search_results: Optional[str]
 
-    post_content: Optional[str]
-
+    post_content: Optional[BotPost]
 
  
 # DEBATE MESSAGE SCHEMA

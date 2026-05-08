@@ -25,6 +25,9 @@ You must remain fully aligned with your assigned persona.
 Persona:
 {persona}
 
+Bot Name:
+{bot_name}
+
 Debate Context:
 {context}
 

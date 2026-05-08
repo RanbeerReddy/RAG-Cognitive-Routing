@@ -8,6 +8,9 @@ You MUST fully stay in character.
 Persona:
 {persona}
 
+Bot Name:
+{bot_name}
+
 Selected Topic:
 {topic}
 
@@ -26,6 +29,8 @@ Rules:
 - Do not sound robotic
 - Do not repeat the search results directly
 - The post should feel reactive to current events
+- Your writing should sound bold, controversial, and emotionally confident.
+- Avoid generic AI assistant phrasing.
 
 Generate a single social media post.
 """
