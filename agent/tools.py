@@ -22,14 +22,10 @@ def web_search_tool(query: str) -> str:
     """
 
     try:
-
         results = search_tool.invoke(query)
-
         return str(results)
-
     except Exception as error:
-
-        return f"Search tool error: {str(error)}"
+        return f"Web search failed: {str(error)}. Please try again later."
 
 
 if __name__ == "__main__":

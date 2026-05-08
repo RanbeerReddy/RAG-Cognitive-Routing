@@ -3,7 +3,7 @@
 from langgraph.graph import StateGraph, END
 from langchain_ollama import ChatOllama
 
-from agent.schemas import GraphState, BotPost
+from agent.schemas import GraphState, BotPost, RouterDecision
 from agent.tools import web_search_tool
 
 from prompts.router_prompt import ROUTER_PROMPT
@@ -24,6 +24,7 @@ llm = ChatOllama(
 
 
 structured_llm = llm.with_structured_output(BotPost)
+router_llm = llm.with_structured_output(RouterDecision)
 
 
 # Decide what topic the bot wants to post about
@@ -38,28 +39,20 @@ def decide_search_node(state: GraphState) -> GraphState:
         bot_name=bot_name
     )
 
-    response = llm.invoke(prompt)
-
-    response_text = response.content.strip()
-
-    topic = "AI Trends"
-    search_query = "latest artificial intelligence news"
-
-    lines = response_text.split("\n")
-
-    for line in lines:
-
-        if line.lower().startswith("topic:"):
-            topic = line.split(":", 1)[1].strip()
-
-        elif line.lower().startswith("search query:"):
-            search_query = line.split(":", 1)[1].strip()
-
-    return {
-        **state,
-        "topic": topic,
-        "search_query": search_query
-    }
+    try:
+        response = router_llm.invoke(prompt)
+        return {
+            **state,
+            "topic": response.topic,
+            "search_query": response.search_query
+        }
+    except Exception as error:
+        # Fallback to defaults
+        return {
+            **state,
+            "topic": "AI Trends",
+            "search_query": "latest artificial intelligence news"
+        }
 
 
 # Search the web for recent context
@@ -68,7 +61,10 @@ def web_search_node(state: GraphState) -> GraphState:
 
     search_query = state["search_query"]
 
-    raw_results = web_search_tool.invoke(search_query)
+    try:
+        raw_results = web_search_tool.invoke(search_query)
+    except Exception as error:
+        raw_results = f"Search failed: {str(error)}"
 
     formatted_results = []
 

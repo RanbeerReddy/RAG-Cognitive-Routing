@@ -94,6 +94,29 @@ class BotPost(BaseModel):
 
 
 
+# ROUTER DECISION SCHEMA
+
+
+class RouterDecision(BaseModel):
+
+    model_config = {
+        "extra": "forbid"
+    }
+
+    topic: str = Field(
+        min_length=3,
+        max_length=50,
+        description="Topic selected by the bot"
+    )
+
+    search_query: str = Field(
+        min_length=5,
+        max_length=100,
+        description="Web search query for gathering context"
+    )
+
+
+
 # LANGGRAPH STATE
 
 

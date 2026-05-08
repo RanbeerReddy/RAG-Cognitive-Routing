@@ -18,7 +18,7 @@ console = Console()
 
 def route_post_to_bots(
     post_content: str,
-    threshold: float = 0.60
+    threshold: float = 0.3
 ) -> list[RouteResult]:
 
     """
