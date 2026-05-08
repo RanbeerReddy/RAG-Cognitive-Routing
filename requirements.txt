@@ -44,6 +44,6 @@ requests==2.32.5
 rich==14.1.0
 tiktoken==0.11.0
 
-dotenv
 typing_extensions
 faiss-cpu 
+langchain_tavily
